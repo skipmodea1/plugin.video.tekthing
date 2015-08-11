@@ -31,18 +31,22 @@ def getParams():
         p[i] = p[i][0]
     return p
 
-
-def findString(search_for_string, string_to_be_searched, delimiter) :
-    begin_pos_search_for_youtube_id = str(string_to_be_searched).find(search_for_string)
-    if begin_pos_search_for_youtube_id >= 0:
-        begin_pos_youtube_id = begin_pos_search_for_youtube_id + len(search_for_string)
-        rest = str(string_to_be_searched)[begin_pos_youtube_id:]
-        length_youtube_id = rest.find(delimiter)
-        end_pos_youtube_id = begin_pos_youtube_id + length_youtube_id
-        found_string = str(string_to_be_searched)[begin_pos_youtube_id:end_pos_youtube_id]     
+#Example:
+#search_for_string: '//www.youtube.com/embed/'
+#string_to_be_searched: '<content:encoded><![CDATA[&lt;iframe scrolling="no" allowfullscreen="" src="//www.youtube.com/embed/hA4MUWYEsHo?wmode=opaque&amp;'
+#search_for_string_delimiter = '?'. 
+#search_for_string_delimiter is the first character that does NOT belong to the search_for_string.
+def findString(search_for_string, string_to_be_searched, search_for_string_delimiter) :
+    begin_pos_search_for_string = str(string_to_be_searched).find(search_for_string)
+    if begin_pos_search_for_string >= 0:
+        begin_pos_search_for_string = begin_pos_search_for_string + len(search_for_string)
+        rest = str(string_to_be_searched)[begin_pos_search_for_string:]
+        length_search_for_string = rest.find(search_for_string_delimiter)
+        end_pos_search_for_string = begin_pos_search_for_string + length_search_for_string
+        found_string = str(string_to_be_searched)[begin_pos_search_for_string:end_pos_search_for_string]     
         return found_string
     else:
-        return None
+        return ''
 
 
 def makeYouTubePluginUrl(youtube_id):
@@ -81,6 +85,11 @@ def getVideos() :
     
     for show in shows:
         youtube_id = findString('//www.youtube.com/embed/', str(show), '?')
+        # Skip video if youtube-id can't be found
+        if youtube_id == '':
+            title_index = title_index + 1
+            continue
+            
         youtube_plugin_url = makeYouTubePluginUrl(youtube_id)
         url = youtube_plugin_url
    
@@ -136,12 +145,12 @@ params = getParams()
 try:
     mode = params['mode']
 except:
-    mode = None
+    mode = 'list'
 
 if (DEBUG) == 'true':
     xbmc.log( "[ADDON] %s v%s (%s) debug mode, %s = %s" % ( __addon__, __version__, __date__, "mode:", str(mode) ), xbmc.LOGNOTICE )
  
-if mode == None:
+if mode == 'list':
     getVideos()
 elif mode == 'play':
     title = params ['title']
