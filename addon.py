@@ -15,9 +15,9 @@ import xbmcgui
 import xbmcplugin
 
 ADDON       = "plugin.video.tekthing"
-SETTINGS    = xbmcaddon.Addon(id=ADDON )
+SETTINGS    = xbmcaddon.Addon()
 LANGUAGE    = SETTINGS.getLocalizedString
-IMAGES_PATH = os.path.join( xbmcaddon.Addon(id=ADDON ).getAddonInfo('path'), 'resources', 'images' )
+IMAGES_PATH = os.path.join( xbmcaddon.Addon().getAddonInfo('path'), 'resources', 'images' )
 DATE        = "2017-03-12"
 VERSION     = "1.0.1"
 
