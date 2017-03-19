@@ -18,8 +18,8 @@ ADDON       = "plugin.video.tekthing"
 SETTINGS    = xbmcaddon.Addon(id=ADDON )
 LANGUAGE    = SETTINGS.getLocalizedString
 IMAGES_PATH = os.path.join( xbmcaddon.Addon(id=ADDON ).getAddonInfo('path'), 'resources', 'images' )
-DATE        = "2016-06-05"
-VERSION     = "1.0.2-SNAPSHOT"
+DATE        = "2017-03-12"
+VERSION     = "1.0.2"
 
 RSS_URL = "http://feeds.feedburner.com/Tekthing"
 
