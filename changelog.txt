@@ -1,3 +1,7 @@
+v1.0.2-SNAPSHOT (2018-01-06)
+- addon now works in kode python 2 and also 3 (!!) thanks to the future project
+- addon.xml contains NOT YET SUPPORTED python3 tag
+
 v1.0.1 (2017-03-12):
 - changed addon debugging info to kodi debugging info
 - using po-files
