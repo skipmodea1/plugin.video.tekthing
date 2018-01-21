@@ -22,8 +22,8 @@ LANGUAGE = SETTINGS.getLocalizedString
 IMAGES_PATH = os.path.join( xbmcaddon.Addon().getAddonInfo('path'), 'resources', 'images' )
 HEADERS = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
 RSS_URL = "http://feeds.feedburner.com/Tekthing"
-DATE = "2018-01-03"
-VERSION = "1.0.3-SNAPSHOT"
+DATE = "2018-01-21"
+VERSION = "1.0.3"
 
 
 def getParams():
