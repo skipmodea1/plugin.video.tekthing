@@ -22,8 +22,8 @@ LANGUAGE = SETTINGS.getLocalizedString
 IMAGES_PATH = os.path.join( xbmcaddon.Addon().getAddonInfo('path'), 'resources', 'images' )
 HEADERS = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
 RSS_URL = "http://feeds.feedburner.com/Tekthing"
-DATE = "2018-01-21"
-VERSION = "1.0.3"
+DATE = "2018-02-07"
+VERSION = "1.0.3-SNAPSHOT"
 
 
 def getParams():
@@ -113,6 +113,7 @@ def getVideos() :
         url = sys.argv[0] + '?' + urllib.parse.urlencode(parameters)
         listitem = xbmcgui.ListItem( title, iconImage="DefaultVideo.png", thumbnailImage=thumbnail_url )
         listitem.setInfo( "video", { "Title" : title, "Studio" : "roosterteeth" } )
+        listitem.setProperty('IsPlayable', 'true')
         folder = False
         xbmcplugin.addDirectoryItem( handle = int(sys.argv[ 1 ] ), url = url, listitem=listitem, isFolder=folder)
         
@@ -126,17 +127,16 @@ def getVideos() :
 
 
 def playVideo (title, video_url):
-    playlist = xbmc.PlayList( xbmc.PLAYLIST_VIDEO )
-    playlist.clear()
+    # Get the command line arguments
+    # Get the plugin url in plugin:// notation
+    plugin_url = sys.argv[0]
+    # Get the plugin handle as an integer number
+    plugin_handle = int(sys.argv[1])
 
-    thumbnail_url = ''
-    listitem = xbmcgui.ListItem( title, iconImage="DefaultVideo.png", thumbnailImage=thumbnail_url )
-    xbmcplugin.setResolvedUrl(handle=int(sys.argv[1]), succeeded=True, listitem=listitem)
-    listitem.setInfo( "video", { "Title": title, "Studio" : "Tekthing", "Plot" : title, "Genre" : "It-news" } )
-    playlist.add( video_url, listitem )
+    log("video_url", video_url)
 
-    xbmcPlayer = xbmc.Player()
-    xbmcPlayer.play( playlist )
+    list_item = xbmcgui.ListItem(path=video_url)
+    xbmcplugin.setResolvedUrl(plugin_handle, True, list_item)
 
 
 if sys.version_info[0] > 2:
