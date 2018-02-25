@@ -22,8 +22,8 @@ LANGUAGE = SETTINGS.getLocalizedString
 IMAGES_PATH = os.path.join( xbmcaddon.Addon().getAddonInfo('path'), 'resources', 'images' )
 HEADERS = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
 RSS_URL = "http://feeds.feedburner.com/Tekthing"
-DATE = "2018-02-07"
-VERSION = "1.0.3-SNAPSHOT"
+DATE = "2018-02-24"
+VERSION = "1.0.4-SNAPSHOT"
 
 
 def getParams():
@@ -109,12 +109,16 @@ def getVideos() :
         thumbnail_url = ''
 
         # Add to list...
-        parameters = {"mode" : "play", "title" : title, "url" : url, "next_page_possible": "False"}
-        url = sys.argv[0] + '?' + urllib.parse.urlencode(parameters)
         listitem = xbmcgui.ListItem( title, iconImage="DefaultVideo.png", thumbnailImage=thumbnail_url )
         listitem.setInfo( "video", { "Title" : title, "Studio" : "roosterteeth" } )
         listitem.setProperty('IsPlayable', 'true')
         folder = False
+
+        # let's remove any non-ascii characters
+        title = title.encode('ascii', 'ignore')
+
+        parameters = {"mode" : "play", "title" : title, "url" : url, "next_page_possible": "False"}
+        url = sys.argv[0] + '?' + urllib.parse.urlencode(parameters)
         xbmcplugin.addDirectoryItem( handle = int(sys.argv[ 1 ] ), url = url, listitem=listitem, isFolder=folder)
         
         title_index = title_index + 1
