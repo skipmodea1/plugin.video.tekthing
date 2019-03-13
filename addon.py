@@ -49,10 +49,6 @@ def findString(search_for_string, string_to_be_searched, search_for_string_delim
         return ''
 
 
-def makeYouTubePluginUrl(youtube_id):
-    return 'plugin://plugin.video.youtube/play/?video_id=%s' % youtube_id
-
-
 def getVideos() :
     #
     # Init
