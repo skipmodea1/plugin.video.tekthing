@@ -6,7 +6,6 @@ standard_library.install_aliases()
 from builtins import str
 import os
 import sys
-import re
 from bs4 import BeautifulSoup
 from urllib.parse import parse_qs
 import urllib.request, urllib.parse, urllib.error
@@ -22,8 +21,8 @@ LANGUAGE = SETTINGS.getLocalizedString
 IMAGES_PATH = os.path.join( xbmcaddon.Addon().getAddonInfo('path'), 'resources', 'images' )
 HEADERS = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
 RSS_URL = "http://feeds.feedburner.com/Tekthing"
-DATE = "2018-02-24"
-VERSION = "1.0.4-SNAPSHOT"
+DATE = "2019-03-13"
+VERSION = "1.0.4"
 
 
 def getParams():
@@ -75,32 +74,40 @@ def getVideos() :
 
     # log("soup", soup)
 
-#<title>TekThing 31: Epson WorkForce ET-4550 Means Cheap Ink! New Intel Skylake Core i7-6700K, Turn On Windows 10 Privacy!</title>    
-    titles = soup.findAll('title')
+    # <item>
+    #       <title>Alienware m15 Review, RTX 2060 Price, Release Date, CES 2019: What We Expect To See!!! -- TekThing 210</title>
+    #       <description>
+    # GTX 2060 Date &amp; Bargain Pricing, AMD Ryzen 3000 Rumors, and Everything Else We’re Looking Forward To At CES 2019! Alienware m15 Laptop Review, Smart Lock Recommendation, Bear Tracks!!!
+    #     </description>
+    #       <link/>http://feeds.rapidfeeds.com/?iid4ct=7594293
+    #       <guid ispermalink="true">http://feeds.rapidfeeds.com/?iid4ct=7594293</guid>
+    #       <enclosure length="616627447" type="video/mp4" url="http://mcdn.podbean.com/mf/web/44j6vt/tekthing--0210--alienware-m15-review-rtx-2060-price-release-date-ces-2019-what-we-expect-to-see.mp4">
+    #       <pubdate>Thu, 03 Jan 2019 16:00:00 EST</pubdate>
+    #     <author>ask@tekthing.com</author><media:content filesize="616627447" type="video/mp4" url="http://mcdn.podbean.com/mf/web/44j6vt/tekthing--0210--alienware-m15-review-rtx-2060-price-release-date-ces-2019-what-we-expect-to-see.mp4"><itunes:explicit>no</itunes:explicit><itunes:subtitle> GTX 2060 Date &amp; Bargain Pricing, AMD Ryzen 3000 Rumors, and Everything Else We’re Looking Forward To At CES 2019! Alienware m15 Laptop Review, Smart Lock Recommendation, Bear Tracks!!! </itunes:subtitle><itunes:author>ask@tekthing.com</itunes:author><itunes:summary> GTX 2060 Date &amp; Bargain Pricing, AMD Ryzen 3000 Rumors, and Everything Else We’re Looking Forward To At CES 2019! Alienware m15 Laptop Review, Smart Lock Recommendation, Bear Tracks!!! </itunes:summary><itunes:keywords>tech,questions,tekzilla,patrick,norton,shannon,morse,pc,mac,ios,android,fix,make</itunes:keywords></media:content></enclosure></item>
 
-    log("len(titles)", len(titles))
+    items = soup.findAll('item')
 
-    # <content:encoded><![CDATA[&lt;iframe scrolling="no" allowfullscreen="" src="//www.youtube.com/embed/hA4MUWYEsHo?wmode=opaque&amp;enablejsapi=1" width="854" frameborder="0" height="480"&gt;
-    # ... an&gt;Download the&nbsp;&lt;/span&gt;&lt;a href="http://tekthing.podbean.com/mf/web/gbjpky/tekthing--0031--epson-ecotank-means-cheap-ink-new-intel-skylake-corei7-6700k-cpu-more.mp4"&gt;video&l...
+    log("len(items)", len(items))
 
-    # ends with .mp4
-    shows = soup.findAll('a', attrs={'href': re.compile("\w*.mp4")})
+    for item in items:
 
-    log("len(shows)", len(shows))
+        # log("item", item)
 
-    for show in shows:
+        url = findString('url="', item, '"')
 
-        log("show", show)
+        # log("url", url)
 
-        #<a href="https://tekthing.podbean.com/mf/web/jtrj6h/tekthing--0158--new-dell-xps-13-hp-chromebooks-ces-2018-kill-a-watt.mp4">Download Episode 158</a>
-        url = findString('href="', show, '"')
-
-        log("url", url)
+        item = str(item)
+        title_start_pos = item.find("<title>") + len("<title>")
+        title_end_pos = item.find("</title>", title_start_pos)
+        title = item[title_start_pos:title_end_pos]
 
         try:
-            title = str(titles[title_index])
+            title = convertToUnicodeString(title)
             title = title.replace('<title>', '')
-            title = title.replace('</title>', '')   
+            title = title.replace('</title>', '')
+            title = title.replace('&amp', '&')
+            title = title.replace('&AMP', '&')
         except:
             title = 'Unknown title'
 
