@@ -20,7 +20,7 @@
 	<disclaimer lang="en">For bugs, requests or general questions visit the Tekthing.com thread on the Kodi.tv forum</disclaimer>
     <language>en</language>
     <platform>all</platform>
-    <license>GNU GENERAL PUBLIC LICENSE. Version 3, June 2007</license>
+    <license>GPL-2.0-or-later</license>
     <forum>http://forum.kodi.tv/showthread.php?tid=235175</forum>
     <website>http://tekthing.com</website>
     <email></email>
