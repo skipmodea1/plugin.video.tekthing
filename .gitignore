@@ -43,3 +43,8 @@ Temporary Items
 .apdisk
 
 *.pyo
+.idea/workspace.xml
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/modules.xml
+.idea/plugin.video.tekthing.iml
+.idea/vcs.xml
